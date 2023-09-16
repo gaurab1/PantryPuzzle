@@ -1,45 +1,30 @@
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import { Button, Form } from 'semantic-ui-react'
+
+
 import './App.css';
-import foodSubmit from './handles/foodsubmit';
-import { useRef } from 'react';
-import Create from './components/create';
 
 
-function App() {
-  const dataRef = useRef()
- 
-  const submithandler = (e) => {
-    e.preventDefault()
-    foodSubmit(dataRef.current.value)
-    dataRef.current.value = ""
-  }
- 
-  return (
-    <div className="App">
-      <form onSubmit={submithandler}>
-        <input type= "text" ref={dataRef} />
-        <button type = "submit">Save</button>
-      </form>
-    </div>
-  );
+export default function Create() {
+    const [food, setFood] = useState('');
+    const [expiry, setExpiry] = useState('');
+    const postData = () => {
+        console.log(food);
+        console.log(expiry);
+    }
+    return (
+        <div>
+            <Form className="create-form">
+                <Form.Field>
+                    <label>Food Item</label>
+                    <input placeholder='Food Item' onChange={(e) => setFood(e.target.value)}/>
+                </Form.Field>
+                <Form.Field>
+                    <label>Expiry Date</label>
+                    <input placeholder='Expiry Date' onChange={(e) => setExpiry(e.target.value)}/>
+                </Form.Field>
+                <Button onClick={postData} type='submit'>Submit</Button>
+            </Form>
+        </div>
+    )
 }
- 
-export default App;
-
-
-// function App() {
-// // Maybe need to add Firebase and firestore stuff here?
-
-//   return (
-//     <div className="main">
-//       <h1 className="main-header">PantryPuzzle</h1>
-//       <div>
-//         <Create/>
-//       </div>
-
-//     </div>
-//   );
-// }
-
-// export default App;
-

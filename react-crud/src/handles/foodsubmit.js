@@ -4,11 +4,12 @@ import firebase from "firebase/compat/app";
 import { firestore} from '../firebase';
 // import { firestore } from "../firebase_setup/firebase"
  
-const foodSubmit = (testdata) => {
+const foodSubmit = (foodItem, expDate) => {
     const ref = collection(firestore, "test_data") // Firebase creates this automatically
  
     let data = {
-        testData: testdata
+        food: foodItem,
+        expirationDate: expDate,
     }
     
     try {
