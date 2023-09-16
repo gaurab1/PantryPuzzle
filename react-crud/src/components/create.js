@@ -1,19 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'semantic-ui-react'
+
+import foodSubmit from '../handles/foodsubmit';
+import { useRef } from 'react';
+//IMPORT FOODSUBMIT
+
+//IMPORT 
 
 
 import '../App.css';
 
 
 export default function Create() {
+    const foodItem = useRef()
+    const expDate = useRef()
+
+
+
     const [food, setFood] = useState('');
     const [expiry, setExpiry] = useState('');
+    const [images, setImages] = useState([]);
+    const [imageURLs, setImageURLs] = useState([]);
     const postData = () => {
-        console.log(food);
-        console.log(expiry);
+        foodSubmit(food, expiry)
     }
+
+    useEffect(() => {
+        if (images.length < 1) return;
+        const newImageUrls = [];
+        images.forEach(image => newImageUrls.push(URL.createObjectURL(image)));
+        setImageURLs(newImageUrls);
+    }, [images]);
+
+    function onImageChange(e){
+        setImages([...e.target.files]);
+    }
+
     return (
         <div>
+            Upload Food Images
+            <br/>
+            <br/>
+            <input type="file" multiple accept="image/*" onChange={onImageChange} />
+            {imageURLs.map(imageSrc => <img src={imageSrc}  width="10%"/>)}
+            <br/>
+            <br/>
+
+            OR
+
+            <br/>
+            <br/>
             <Form className="create-form">
                 <Form.Field>
                     <label>Food Item</label>
