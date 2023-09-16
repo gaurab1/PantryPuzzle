@@ -1,30 +1,23 @@
-import React, { useState } from 'react';
-import { Button, Form } from 'semantic-ui-react'
-
-
 import './App.css';
+import Create from './components/create';
+import Read from './components/read';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 
-
-export default function Create() {
-    const [food, setFood] = useState('');
-    const [expiry, setExpiry] = useState('');
-    const postData = () => {
-        console.log(food);
-        console.log(expiry);
-    }
-    return (
-        <div>
-            <Form className="create-form">
-                <Form.Field>
-                    <label>Food Item</label>
-                    <input placeholder='Food Item' onChange={(e) => setFood(e.target.value)}/>
-                </Form.Field>
-                <Form.Field>
-                    <label>Expiry Date</label>
-                    <input placeholder='Expiry Date' onChange={(e) => setExpiry(e.target.value)}/>
-                </Form.Field>
-                <Button onClick={postData} type='submit'>Submit</Button>
-            </Form>
-        </div>
-    )
+function App() {
+  return (
+    <Router>
+    <div className="main">
+      <h1 className="main-header">PantryPuzzle</h1>
+      <div>
+        
+        <Routes>
+        <Route path='/create' element={<Create />} />
+        <Route path='/read' element={<Read />} />
+        </Routes>
+      </div>
+    </div>
+    </Router>
+  );
 }
+
+export default App;

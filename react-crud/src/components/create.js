@@ -1,16 +1,26 @@
 import React, { useState } from 'react';
-import { Button, Checkbox, Form } from 'semantic-ui-react'
+import { Button, Form } from 'semantic-ui-react'
+
+import foodSubmit from '../handles/foodsubmit';
+import { useRef } from 'react';
+//IMPORT FOODSUBMIT
+
+//IMPORT 
 
 
 import '../App.css';
 
 
 export default function Create() {
+    const foodItem = useRef()
+    const expDate = useRef()
+
+
+
     const [food, setFood] = useState('');
     const [expiry, setExpiry] = useState('');
     const postData = () => {
-        console.log(food);
-        console.log(expiry);
+        foodSubmit(food, expiry)
     }
     return (
         <div>
