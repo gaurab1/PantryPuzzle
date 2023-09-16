@@ -4,11 +4,14 @@ from google.cloud import vision
 from google.cloud import vision_v1
 from google.cloud.vision_v1 import types
 import pandas as pd
+import re
 
 # in the google cloud console, create a service account and download the credentials.json file
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'./react-crud/src/propane-calling-399220-22840ac7b1fb.json'
 
 client = vision.ImageAnnotatorClient()
+
+
 
 def detectText(img):
     with io.open (img, 'rb') as image_file:
@@ -41,11 +44,11 @@ def detectText(img):
                 #check if i - 1 is a two digit number and
                 #check if i + 1 is a four digit number. if so
                 #check both lenght and that they are numbers
-                if len(texts[i - 1].description) == 2 and len(texts[i + 1].description) == 4:
-                    if texts[i - 1].description.isdigit() and texts[i + 1].description.isdigit():
+                if len(texts[i - 1].description) == 2 and len(texts[i + 1].description) >= 4:
+                    if texts[i - 1].description.isdigit() and texts[i + 1].description[0:4].isdigit():
                         month = texts[i].description
                         day = texts[i - 1].description
-                        year = texts[i + 1].description
+                        year = texts[i + 1].description[0:4]
                         break
             if i + 2 < len(texts): #month day year one
                 if len(texts[i + 1].description) == 2 and len(texts[i + 2].description) == 4:
@@ -54,10 +57,38 @@ def detectText(img):
                         day = texts[i + 1].description
                         year = texts[i + 2].description
                         break
-        #alternatively, check if text is in format month/day/year:
-    print("Month: " + month)
-    print("Day: " + day)
-    print("Year: " + year)
+        #check if string contains three letter month:
+        if(len(texts[i].description) >= 9):
+            if(texts[i].description[2:5] in months):
+                month = texts[i].description[2:5]
+                day = texts[i].description[0:2]
+                year = texts[i].description[5:]
+                break
+            #if it is in format day.month.year
+            if(texts[i].description[2] == "." and texts[i].description[6] == "."):
+                #print("HEY!")
+                month = texts[i].description[3:6]
+                day = texts[i].description[0:2]
+                year = texts[i].description[7:11]
+                break
+
+
+        #month/day/year 4 digit year
+        pattern = r"^(0[1-9]|1[0-2])/(0[1-9]|[12]\d|3[01])/\d{4}$"
+        if re.match(pattern, texts[i].description):
+            month = months[ int(texts[i].description[0:2]) - 1]
+            day = texts[i].description[3:5]
+            year = texts[i].description[6:10]
+            break
+        #month/day/year 2 digit year
+        pattern = r"^(0[1-9]|1[0-2])/(0[1-9]|[12]\d|3[01])/\d{2}$"
+        if re.match(pattern, texts[i].description):
+            month = months[ int(texts[i].description[0:2]) - 1]
+            day = texts[i].description[3:5]
+            year = "20" + texts[i].description[6:8] # the 20 needs to be changed every century
+            break
+    #print(texts)
+    return month, day, year
 
 
 
@@ -66,5 +97,7 @@ def detectText(img):
         
 
 
-image = './images/mandarin4.jpg'
-print(detectText(image))
+#iterate through image path in the folder images
+for filename in os.listdir('./images'):
+    if filename.endswith(".jpg") or filename.endswith(".png"):
+        print(detectText("./images/" + filename))
