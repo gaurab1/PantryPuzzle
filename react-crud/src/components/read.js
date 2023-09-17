@@ -72,11 +72,13 @@ const Read = (onClose) => {
                 <center><h1>What do you want to do with your {foodItem}?</h1></center>
                 {/* <h2>{daysTilExpire}</h2> */}
                 <center className="decision-btns">
-                <Button>Give me recipe ideas</Button>
+                <Button onClick={() => generateRecipe( foodItem )}>Give me recipe ideas</Button>
                 <Button onClick={function() {donateAndClose(foodItem, daysTilExpire, onClose, id)}}>Donate my food</Button>
+                
                 </center>
                                    
               </div>
+              <TextArea className="text-box" value={text} onChange={(e) => setText(e.target.value)} rows={5} cols={30} readonly={true} />
       
             </div>
           </div>
@@ -175,7 +177,7 @@ const Read = (onClose) => {
                             <Table.Row active className="highlighted">
                                <Table.Cell>{doc.data().food}</Table.Cell>
                                 <Table.Cell>{doc.data().expirationDate}</Table.Cell>
-                                <Table.Cell>{Math.ceil(-(date - new Date(doc.data().expirationDate)) / (1000 * 60 * 60 * 24))}</Table.Cell>
+                                <Table.Cell>{handleDate(days)}</Table.Cell>
                                 <Table.Cell><Button onClick={() => handleDecisionClick(doc.data().food, days, doc.id)} className="urgent-btn"><bold>Action!</bold></Button></Table.Cell>
                                 <Table.Cell><img src={trash} className="trash-icon" onClick={() => onDelete(doc.id)}/></Table.Cell>
                              </Table.Row>
@@ -186,7 +188,7 @@ const Read = (onClose) => {
                             <Table.Row>
                                <Table.Cell>{doc.data().food}</Table.Cell>
                                 <Table.Cell>{doc.data().expirationDate}</Table.Cell>
-                                <Table.Cell>{Math.ceil(-(date - new Date(doc.data().expirationDate)) / (1000 * 60 * 60 * 24))}</Table.Cell>
+                                <Table.Cell>{handleDate(days)}</Table.Cell>
                                 <Table.Cell><Button onClick={() => handleDecisionClick(doc.data().food, days, doc.id)}>Action</Button></Table.Cell>
                                 <Table.Cell><img src={trash} className="trash-icon" onClick={() => onDelete(doc.id)}/></Table.Cell>
                              </Table.Row>
