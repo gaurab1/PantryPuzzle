@@ -23,6 +23,13 @@ export default function Create() {
         setFood('')
         setExpiry('')
     }
+
+    const [imageURLs, setImageURLs] = useState([]);
+
+    const onImageUpload = async (e) => {
+        const files = e.target.files;
+    }
+
     return (
         <div>
             Upload Food Images
@@ -46,7 +53,7 @@ export default function Create() {
                     <label>Expiry Date</label>
                     <input placeholder='Expiry Date' value={expiry} onChange={(e) => setExpiry(e.target.value)}/>
                 </Form.Field>
-                <Button onClick={testSubmit} type='submit'>Submit</Button>
+                <Button  type='submit'>Submit</Button>
             </Form>
         </div>
     )
