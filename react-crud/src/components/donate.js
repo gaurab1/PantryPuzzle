@@ -25,7 +25,7 @@ const Read = (onClose) => {
     let year = date.getFullYear();
     return ( 
         <div>
-            <center><h1> Find food near you</h1></center>
+            <center><h1> Find food in your community</h1></center>
             <center><h3> Today's Date: {month}/{day}/{year}</h3></center>
             <Table singleLine>
                 <Table.Header>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Table, Button } from 'semantic-ui-react'
+import Geocode from "react-geocode";
 
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore"; 
 import { firestore } from '../firebase';
@@ -23,7 +24,6 @@ const Read = (onClose) => {
 
     const DecisionModal = ({ onClose, foodItem, daysTilExpire, id }) => {
         console.log("heree");
-        // e.preventDefault();
         return (
           <div className="modal-backdrop">
             <div className="modal-content">
@@ -48,8 +48,51 @@ const Read = (onClose) => {
         console.log("donate");
         donateSubmit(foodItem, daysTilExpire);
         //delete from test_data!!!
-        onDelete(id);
 
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(pos => {
+              const {latitude, longitude} = pos.coords;
+              console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+              Geocode.setLanguage("en");
+              Geocode.setLocationType("ROOFTOP");
+              Geocode.enableDebug();
+
+                const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+
+                fetch(apiUrl)
+                .then((response) => response.json())
+                .then((data) => {
+                    const address = data.display_name;
+                    console.log(`Address: ${address}`);
+                    if (data.address && data.address.road) {
+                        const street = data.address.road;
+                        console.log(`Street: ${street}`);
+                      } else {
+                        console.error('Street name not found in the response.');
+                      }
+                })
+                .catch((error) => {
+                    console.error('Error fetching data:', error);
+                });
+
+            // Geocode.fromLatLng(latitude, longitude).then(
+            //     (response) => {
+            //       const address = response.results[0].formatted_address;
+            //       console.log(address);
+            //     },
+            //     (error) => {
+            //       console.error(error);
+            //     }
+            // );
+
+            //   const url ='https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}'
+            //   fetch(url).then(res => res.json()).then(data=>console.log(data))
+            });
+          } else {
+            console.log("Geolocation is not supported by this browser.");
+        }
+
+        // onDelete(id);
         onClose= setDecisionModalOpen(false);
     }
 
