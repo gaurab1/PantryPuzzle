@@ -5,6 +5,7 @@ from google.cloud import vision_v1
 from google.cloud.vision_v1 import types
 import pandas as pd
 import re
+import requests
 
 # in the google cloud console, create a service account and download the credentials.json file
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'./react-crud/src/propane-calling-399220-22840ac7b1fb.json'
@@ -13,12 +14,27 @@ client = vision.ImageAnnotatorClient()
 
 
 
-def detectText(img):
-    with io.open (img, 'rb') as image_file:
-        content = image_file.read()
+def detectText(image_url, client=client):
+    response = requests.get(image_url)
+    if response.status_code != 200:
+        raise Exception(f"Failed to fetch image from URL: {image_url}")
+
+    # Read the image content
+    content = response.content
+
+    # Create an Image object
     image = vision_v1.types.Image(content=content)
+
+    # Send the image to Google Cloud Vision API for text detection
     response = client.text_detection(image=image)
+
+    # Extract and return the detected text annotations
     texts = response.text_annotations
+    # with io.open (img, 'rb') as image_file:
+    #     content = image_file.read()
+    # image = vision_v1.types.Image(content=content)
+    # response = client.text_detection(image=image)
+    # texts = response.text_annotations
 
     #create an array of months 3 letter abbreviations in all caps
     months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL",
@@ -87,7 +103,7 @@ def detectText(img):
             day = texts[i].description[3:5]
             year = "20" + texts[i].description[6:8] # the 20 needs to be changed every century
             break
-    #print(texts)
+    #print(texts) 
     return month, day, year
 
 
@@ -96,8 +112,8 @@ def detectText(img):
 
         
 
-
+print(detectText("blob:http://localhost:3000/6700282f-cd4f-4f14-b551-47c841141cf6"))
 #iterate through image path in the folder images
-for filename in os.listdir('./images'):
-    if filename.endswith(".jpg") or filename.endswith(".png"):
-        print(detectText("./images/" + filename))
+# for filename in os.listdir('./images'):
+#     if filename.endswith(".jpg") or filename.endswith(".png"):
+#         print(detectText("./images/" + filename))

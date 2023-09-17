@@ -26,11 +26,55 @@ export default function Create() {
     }
 
     useEffect(() => {
+        console.log("DID IT");
         if (images.length < 1) return;
         const newImageUrls = [];
         images.forEach(image => newImageUrls.push(URL.createObjectURL(image)));
+
+        console.log("HEY");
+        //new code for backend communication.
+
+        const formData = new FormData();
+        for (let i = 0; i < images.length; i++) {
+            formData.append('image', images[i]);
+        }
+
+        fetch('http://localhost:3000', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => {
+            console.log(response);
+            setImageURLs(newImageUrls);
+        })
+        .catch(error => {
+            console.error("Error uploading images: ", error);
+        });
+        console.log("DID IT");
+
+        
+
         setImageURLs(newImageUrls);
+        console.log(newImageUrls);
     }, [images]);
+
+    
+
+    // const handleImageUpload = async () => {
+    //     const formData = new FormData();
+    //     for (let i = 0; i < images.length; i++) {
+    //         formData.append('image', images[i]);
+    //     }
+    //     try {
+    //         const response = await fetch('http://localhost:3000/image-urls', {
+    //             method: 'POST',
+    //             body: formData
+    //         });
+    //         console.log(response);
+    //     } catch(error) {
+    //         console.error("Error uploading images: ", error);
+    //     }
+    // };
 
     function onImageChange(e){
         setImages([...e.target.files]);
