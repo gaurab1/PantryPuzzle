@@ -1,7 +1,7 @@
 //MODIFY!!!!
 
 import React, { useState } from 'react';
-import { Table, Button } from 'semantic-ui-react'
+import { Table, Button, Modal } from 'semantic-ui-react'
 
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore"; 
 import { firestore } from '../firebase';
