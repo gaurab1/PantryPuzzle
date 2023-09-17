@@ -1,5 +1,6 @@
 import os
 import sys
+import random
 sys.path.append('../react-crud/src/')
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
@@ -14,7 +15,7 @@ cred = credentials.Certificate('lol.json')
 app = firebase_admin.initialize_app(cred)
 
 db = firestore.client()
-doc_ref = db.collection("test_data").document('random')
+doc_ref = db.collection("test_data").document('random' + str(random.randint(0, 10000)))
 UPLOAD_FOLDER = '../images'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
@@ -41,10 +42,11 @@ def upload_file():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
+            
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             print(detectText(os.path.join(app.config['UPLOAD_FOLDER'], filename)))
             food, expiry = detectText(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             doc_ref.set({"food": food, "expirationDate": expiry})
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('upload_file',
                                     filename=filename))
     return '''
