@@ -8,7 +8,7 @@ import re
 import requests
 
 # in the google cloud console, create a service account and download the credentials.json file
-os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'./react-crud/src/propane-calling-399220-22840ac7b1fb.json'
+os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'propane-calling-399220-22840ac7b1fb.json'
 
 client = vision.ImageAnnotatorClient()
 
@@ -39,6 +39,7 @@ def detectText(image_url, client=client):
     #create an array of months 3 letter abbreviations in all caps
     months = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL",
                 "AUG", "SEP", "OCT", "NOV", "DEC"]
+    month_dict = {months[i]: str(i+1) for i in range(len(months))}
     
     #print each thing in texts
     #find something related to BEST BY or BES BY or EXPIRY, and get the date that comes after it
@@ -104,7 +105,7 @@ def detectText(image_url, client=client):
             year = "20" + texts[i].description[6:8] # the 20 needs to be changed every century
             break
     #print(texts) 
-    return month, day, year
+    return month_dict[month] + '/' + day + '/' + year
 
 
 
