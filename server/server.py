@@ -1,7 +1,9 @@
 import os
+import sys
+sys.path.append('../react-crud/src/')
 from flask import Flask, flash, request, redirect, url_for
 from werkzeug.utils import secure_filename
-
+from TextFromImage import detectText
 UPLOAD_FOLDER = '../images'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
@@ -28,6 +30,7 @@ def upload_file():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
+            print(detectText(os.path.join(app.config['UPLOAD_FOLDER'], filename)))
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             return redirect(url_for('upload_file',
                                     filename=filename))
