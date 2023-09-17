@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
-import { Table, Button } from 'semantic-ui-react'
+import { Table, Button, TextArea } from 'semantic-ui-react'
 
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore"; 
 import { firestore } from '../firebase';
 import donateSubmit from '../handles/donatesubmit'
 import '../App.css';
 
+import axios from 'axios';
+
 const querySnapshot = await getDocs(collection(firestore, "test_data"));
+
+
+
+//local host 3001
+const backendURL = 'http://localhost:3001/recipe'
 
 const onDelete = async (id) => {
     await deleteDoc(doc(firestore, "test_data", id));
@@ -22,11 +29,33 @@ function handleDate(difference) {
   
 }
 
+
+
 const Read = (onClose) => {
+  const [text, setText] = useState('');
+  
     const [DecisionModalOpen, setDecisionModalOpen] = useState(false); //for submitting feedback
     const [selectedFood, setselectedFood] = useState([]);
     const [daysTilExpire, setDaysTilExpire] = useState([]);
 
+    const generateRecipe = async (foodItem) => {
+      console.log(foodItem);
+    
+      //post request to backend with foodItem as body
+    
+      try {
+        const requestData = {foodItem: foodItem};
+        const response = await axios.post(backendURL, requestData);
+        //from response body, get data field
+        const recipeData = response.data;
+        console.log(recipeData);
+        setText(recipeData);
+      } catch (error) {
+        console.log(error);
+      }
+    
+    
+    }
 
 
 
@@ -42,8 +71,9 @@ const Read = (onClose) => {
                 <h1>What do you want to do with your {foodItem}?</h1>
                 {/* <h2>{daysTilExpire}</h2> */}
 
-                <Button>Give me recipe ideas</Button>
+                <Button onClick={() => generateRecipe( foodItem )}>Give me recipe ideas</Button>
                 <Button onClick={function(){ donateSubmit(foodItem, daysTilExpire) }}>Donate my food</Button>
+                <TextArea value={text} onChange={(e) => setText(e.target.value)} rows={5} cols={30} readonly={true} />
                     {/* REROUTE TO DONATE.JS PAGE!!!! */}
               </div>
       
