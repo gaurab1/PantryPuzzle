@@ -18,6 +18,8 @@
 .env.test.local
 .env.production.local
 
+./react-crud/src/propane-calling-399220-22840ac7b1fb.json
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
