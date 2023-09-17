@@ -7,6 +7,23 @@ import pandas as pd
 import re
 import requests
 
+from clarifai_grpc.channel.clarifai_channel import ClarifaiChannel
+from clarifai_grpc.grpc.api import resources_pb2, service_pb2, service_pb2_grpc
+from clarifai_grpc.grpc.api.status import status_code_pb2
+
+PAT = '377ffc4b391a4b05a34ae4e8b05c3f8c'
+USER_ID = 'clarifai'
+APP_ID = 'main'
+
+MODEL_ID = 'food-item-recognition'
+MODEL_VERSION_ID = '1d5fd481e0cf4826aa72ec3ff049e044'
+
+channel = ClarifaiChannel.get_grpc_channel()
+stub = service_pb2_grpc.V2Stub(channel)
+
+metadata = (('authorization', 'Key ' + PAT),)
+userDataObject = resources_pb2.UserAppIDSet(user_id=USER_ID, app_id=APP_ID)
+
 # in the google cloud console, create a service account and download the credentials.json file
 os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = r'propane-calling-399220-22840ac7b1fb.json'
 
@@ -115,6 +132,41 @@ def detectText(img):
 
 #print(detectText("blob:http://localhost:3000/6700282f-cd4f-4f14-b551-47c841141cf6"))
 #iterate through image path in the folder images
-for filename in os.listdir('./images'):
+for filename in os.listdir('../../images'):
     if filename.endswith(".jpg") or filename.endswith(".png"):
-        print(detectText("./images/" + filename))
+        print(filename)
+        print(detectText("../../images/" + filename))
+        
+        IMAGE_URL = "../../images/" + filename
+        post_model_outputs_response = stub.PostModelOutputs(
+            service_pb2.PostModelOutputsRequest(
+                user_app_id=userDataObject,  # The userDataObject is created in the overview and is required when using a PAT
+                model_id=MODEL_ID,
+                version_id=MODEL_VERSION_ID,  # This is optional. Defaults to the latest model version
+                inputs=[
+                    resources_pb2.Input(
+                        data=resources_pb2.Data(
+                            image=resources_pb2.Image(
+                                url=IMAGE_URL
+                            )
+                        )
+                    )
+                ]
+            ),
+            metadata=metadata
+        )
+        
+        if post_model_outputs_response.status.code != status_code_pb2.SUCCESS:
+            print(post_model_outputs_response.status.code)
+            raise Exception("Post model outputs failed, status: " + post_model_outputs_response.status.description)
+
+        # Since we have one input, one output will exist here
+        output = post_model_outputs_response.outputs[0]
+        print(output.data.concepts[0].name)
+
+            
+
+# Uncomment this line to print the full Response JSON
+#print(output)
+
+        
