@@ -12,15 +12,13 @@ import '../App.css';
 
 
 export default function Create() {
-    const foodItem = useRef()
-    const expDate = useRef()
-
-
 
     const [food, setFood] = useState('');
     const [expiry, setExpiry] = useState('');
     const postData = () => {
         foodSubmit(food, expiry)
+        setFood('')
+        setExpiry('')
     }
     return (
         <div>

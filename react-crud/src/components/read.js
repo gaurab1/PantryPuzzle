@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Table, Button } from 'semantic-ui-react'
 
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore"; 
@@ -32,7 +32,8 @@ export default function Read() {
                 <Table.Body>
                 {
                 querySnapshot.docs.map(doc => {
-
+                    const days = Math.ceil(-(date - new Date(doc.data().expirationDate)) / (1000 * 60 * 60 * 24));
+                    if (days > 2) {
                     return (
                         <Table.Row>
                            <Table.Cell>{doc.data().food}</Table.Cell>
@@ -41,6 +42,16 @@ export default function Read() {
                             <Table.Cell><Button onClick={() => onDelete(doc.id)}>Delete</Button></Table.Cell>
                          </Table.Row>
                     )
+                    } else {
+                        return (
+                            <Table.Row active>
+                            <Table.Cell>{doc.data().food}</Table.Cell>
+                             <Table.Cell>{doc.data().expirationDate}</Table.Cell>
+                             <Table.Cell>{Math.ceil(-(date - new Date(doc.data().expirationDate)) / (1000 * 60 * 60 * 24))}</Table.Cell>
+                             <Table.Cell><Button onClick={() => onDelete(doc.id)}>Action!</Button></Table.Cell>
+                            </Table.Row>
+                        )
+                    }
                 })}
                 
                 </Table.Body>
