@@ -23,6 +23,13 @@ export default function Create() {
         setFood('')
         setExpiry('')
     }
+
+    // const [imageURLs, setImageURLs] = useState([]);
+
+    // const onImageUpload = async (e) => {
+    //     const files = e.target.files;
+    // }
+
     return (
         <div>
             {/* Upload Food Images

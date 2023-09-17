@@ -13,6 +13,15 @@ const onDelete = async (id) => {
     window.location.reload();
 }
 
+function handleDate(difference) {
+  if(difference < 0) {
+    return Math.abs(difference) + " days expired";
+  }
+  return difference + " days until expiration";
+
+  
+}
+
 const Read = (onClose) => {
     const [DecisionModalOpen, setDecisionModalOpen] = useState(false); //for submitting feedback
     const [selectedFood, setselectedFood] = useState([]);
@@ -87,7 +96,7 @@ const Read = (onClose) => {
                         <Table.Row>
                            <Table.Cell>{doc.data().food}</Table.Cell>
                             <Table.Cell>{doc.data().expirationDate}</Table.Cell>
-                            <Table.Cell>{Math.ceil(-(date - new Date(doc.data().expirationDate)) / (1000 * 60 * 60 * 24))}</Table.Cell>
+                            <Table.Cell>{ handleDate(days) }</Table.Cell>
                             <Table.Cell><Button onClick={() => onDelete(doc.id)}>Delete</Button></Table.Cell>
 
                          </Table.Row>
@@ -96,7 +105,7 @@ const Read = (onClose) => {
                             <Table.Row active>
                             <Table.Cell>{doc.data().food}</Table.Cell>
                              <Table.Cell>{doc.data().expirationDate}</Table.Cell>
-                             <Table.Cell>{Math.ceil(-(date - new Date(doc.data().expirationDate)) / (1000 * 60 * 60 * 24))}</Table.Cell>
+                             <Table.Cell>{handleDate(days)}</Table.Cell>
                              <Table.Cell><Button onClick={() => handleDecisionClick(doc.data().food, days)}>Action!</Button></Table.Cell>
  
                           </Table.Row>
