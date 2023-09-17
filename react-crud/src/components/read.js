@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Table, Button } from 'semantic-ui-react'
 import Geocode from "react-geocode";
 
-import { collection, getDocs, doc, deleteDoc } from "firebase/firestore"; 
+import { collection, getDocs, doc, deleteDoc, updateDoc, addDoc } from "firebase/firestore"; 
 import { firestore } from '../firebase';
 import donateSubmit from '../handles/donatesubmit'
 import trash from '../trash-can-icon.svg'
@@ -20,9 +20,11 @@ const Read = (onClose) => {
     const [selectedFood, setselectedFood] = useState([]);
     const [daysTilExpire, setDaysTilExpire] = useState([]);
     const [theID, settheID] = useState([]);
+    const [location, setLocation] = useState([]);
 
 
-    const DecisionModal = ({ onClose, foodItem, daysTilExpire, id }) => {
+
+    const DecisionModal = ({ onClose, foodItem, daysTilExpire, id, location }) => {
         console.log("heree");
         return (
           <div className="modal-backdrop">
@@ -34,7 +36,7 @@ const Read = (onClose) => {
                 {/* <h2>{daysTilExpire}</h2> */}
                 <center className="decision-btns">
                 <Button>Give me recipe ideas</Button>
-                <Button onClick={function() {donateAndClose(foodItem, daysTilExpire, onClose, id)}}>Donate my food</Button>
+                <Button onClick={function() {donateAndClose(foodItem, daysTilExpire, onClose, id, location)}}>Donate my food</Button>
                 </center>
                                    
               </div>
@@ -44,65 +46,69 @@ const Read = (onClose) => {
         );
       };
 
-    const donateAndClose = (foodItem, daysTilExpire, onClose, id) => {
+      const donateAndClose = async (foodItem, daysTilExpire, onClose, id, location) => {
         console.log("donate");
-        donateSubmit(foodItem, daysTilExpire);
-        //delete from test_data!!!
-
+      
         if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(pos => {
-              const {latitude, longitude} = pos.coords;
-              console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
-              Geocode.setLanguage("en");
-              Geocode.setLocationType("ROOFTOP");
-              Geocode.enableDebug();
-
-                const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
-
-                fetch(apiUrl)
-                .then((response) => response.json())
-                .then((data) => {
-                    const address = data.display_name;
-                    console.log(`Address: ${address}`);
-                    if (data.address && data.address.road) {
-                        const street = data.address.road;
-                        console.log(`Street: ${street}`);
-                      } else {
-                        console.error('Street name not found in the response.');
-                      }
-                })
-                .catch((error) => {
-                    console.error('Error fetching data:', error);
-                });
-
-            // Geocode.fromLatLng(latitude, longitude).then(
-            //     (response) => {
-            //       const address = response.results[0].formatted_address;
-            //       console.log(address);
-            //     },
-            //     (error) => {
-            //       console.error(error);
-            //     }
-            // );
-
-            //   const url ='https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}'
-            //   fetch(url).then(res => res.json()).then(data=>console.log(data))
-            });
-          } else {
-            console.log("Geolocation is not supported by this browser.");
+          navigator.geolocation.getCurrentPosition(async (pos) => {
+            const { latitude, longitude } = pos.coords;
+            console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+            Geocode.setLanguage("en");
+            Geocode.setLocationType("ROOFTOP");
+            Geocode.enableDebug();
+      
+            const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+      
+            try {
+              const response = await fetch(apiUrl);
+              const data = await response.json();
+              const address = data.display_name;
+              location = address;
+              console.log(`Location var: ${location}`);
+      
+              // Create a new document in "donations" collection
+              const docRef = await addDoc(collection(firestore, 'donations'), {
+                food: foodItem,
+                daysTilExpire: daysTilExpire,
+              });
+      
+              // Capture the document ID of the newly created document
+              const docId = docRef.id;
+      
+              // ADD LOCATION TO DOCUMENT IN "test_data" COLLECTION USING CAPTURED DOC ID
+              const testDocRef = doc(firestore, 'donations', docId);
+              const updateData = {
+                userLocation: location,
+              };
+      
+              try {
+                await updateDoc(testDocRef, updateData);
+                console.log('Document updated successfully in "donations" collection.');
+              } catch (error) {
+                console.error('Error updating document in "donations" collection:', error);
+              }
+            } catch (error) {
+              console.error('Error fetching data:', error);
+            }
+          });
+        } else {
+          console.log("Geolocation is not supported by this browser.");
         }
+      
+        // DELETE FROM "test_data"
+        onDelete(id);
+        onClose = setDecisionModalOpen(false);
+      };
+      
+      
 
-        // onDelete(id);
-        onClose= setDecisionModalOpen(false);
-    }
 
 
-
-
-      const handleDecisionClick = (foodItem, daysTilExpire, id) => {
+      const handleDecisionClick = (foodItem, daysTilExpire, id, location) => {
         setselectedFood(foodItem); // Merge the profilePictureUrl into the selectedApplicant
         setDaysTilExpire(daysTilExpire); // Merge the profilePictureUrl into the selectedApplicant
         settheID(id);
+        setLocation(location)
         console.log(foodItem);
         setDecisionModalOpen(true);
       };
@@ -163,6 +169,7 @@ const Read = (onClose) => {
                 onClose={() => setDecisionModalOpen(false)}
                 foodItem={selectedFood}
                 daysTilExpire={daysTilExpire}
+                location={location}
                 id={theID}
                 />
             )}
