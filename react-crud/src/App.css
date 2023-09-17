@@ -2,6 +2,33 @@
 
 /* READ STUFF */
 
+.trash-icon {
+  width: 30px;
+  height: 30px;
+  cursor:pointer;
+}
+
+.urgent-btn {
+  color: #00008B !important;
+}
+
+.decision-btns {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: row;
+  gap: 4rem;
+  margin-left: 14%;
+}
+
+/* .highlighted {
+  background-color: pink !important;
+} */
+
+.tr active {
+  background-color: pink !important;
+
+}
+
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -20,8 +47,8 @@
   border-radius: 8px;
 
   max-width: 800px; /* Set the maximum width of the modal */
-  width: 45%; /* Set the width of the modal to 90% of the available space */
-  height: 75%; /* Set the height of the modal to 60% of the available space */
+  width: 35%; /* Set the width of the modal to 90% of the available space */
+  height: 40%; /* Set the height of the modal to 60% of the available space */
   margin: auto; /* Center the modal horizontally */
   padding: 20px;
   border-radius: 8px;
