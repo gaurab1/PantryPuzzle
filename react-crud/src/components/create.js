@@ -25,11 +25,11 @@ export default function Create() {
             <Form className="create-form">
                 <Form.Field>
                     <label>Food Item</label>
-                    <input placeholder='Food Item' onChange={(e) => setFood(e.target.value)}/>
+                    <input placeholder='Food Item' value={food} onChange={(e) => setFood(e.target.value)}/>
                 </Form.Field>
                 <Form.Field>
                     <label>Expiry Date</label>
-                    <input placeholder='Expiry Date' onChange={(e) => setExpiry(e.target.value)}/>
+                    <input placeholder='Expiry Date' value={expiry} onChange={(e) => setExpiry(e.target.value)}/>
                 </Form.Field>
                 <Button onClick={postData} type='submit'>Submit</Button>
             </Form>
