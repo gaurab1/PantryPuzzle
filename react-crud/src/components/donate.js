@@ -39,11 +39,11 @@ const Read = (onClose) => {
                 <Table.Body>
                 {
                 querySnapshot.docs.map(doc => {
-                    const days = Math.ceil(-(date - new Date(doc.data().expirationDate)) / (1000 * 60 * 60 * 24));
+                    const days = Math.ceil(-(date - new Date(doc.data().daysTilExpire)) / (1000 * 60 * 60 * 24));
                     return (
                         <Table.Row>
                            <Table.Cell>{doc.data().food}</Table.Cell>
-                            <Table.Cell>{doc.data().expirationDate}</Table.Cell>
+                            <Table.Cell>{doc.data().daysTilExpire}</Table.Cell>
                             <Table.Cell>{days}</Table.Cell>
                             <Table.Cell><Button>Request</Button></Table.Cell>
 
