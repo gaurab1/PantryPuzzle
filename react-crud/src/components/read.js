@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Table, Button } from 'semantic-ui-react'
+
 import Geocode from "react-geocode";
 import { Table, Button, TextArea } from 'semantic-ui-react'
 
@@ -190,26 +190,9 @@ const Read = (onClose) => {
                                 <Table.Cell><Button onClick={() => handleDecisionClick(doc.data().food, days, doc.id)}>Action</Button></Table.Cell>
                                 <Table.Cell><img src={trash} className="trash-icon" onClick={() => onDelete(doc.id)}/></Table.Cell>
                              </Table.Row>
-                    if (days > 2) {
-                    return (
-                        <Table.Row>
-                           <Table.Cell>{doc.data().food}</Table.Cell>
-                            <Table.Cell>{doc.data().expirationDate}</Table.Cell>
-                            <Table.Cell>{ handleDate(days) }</Table.Cell>
-                            <Table.Cell><Button onClick={() => onDelete(doc.id)}>Delete</Button></Table.Cell>
-
-                         </Table.Row>
-                    )} else {
-                        return (
-                            <Table.Row active>
-                            <Table.Cell>{doc.data().food}</Table.Cell>
-                             <Table.Cell>{doc.data().expirationDate}</Table.Cell>
-                             <Table.Cell>{handleDate(days)}</Table.Cell>
-                             <Table.Cell><Button onClick={() => handleDecisionClick(doc.data().food, days)}>Action!</Button></Table.Cell>
- 
-                          </Table.Row>
                         )
                     }
+                    
                 })}
                 
                 </Table.Body>
