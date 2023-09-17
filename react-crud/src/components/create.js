@@ -25,7 +25,7 @@ export default function Create() {
     }
     return (
         <div>
-            Upload Food Images
+            {/* Upload Food Images
             <br/>
             <br/>
             <input type="file" multiple accept="image/*" onChange={onImageUpload} />
@@ -36,7 +36,7 @@ export default function Create() {
             OR
 
             <br/>
-            <br/>
+            <br/> */}
             <Form className="create-form">
                 <Form.Field>
                     <label>Food Item</label>
@@ -46,7 +46,7 @@ export default function Create() {
                     <label>Expiry Date</label>
                     <input placeholder='Expiry Date' value={expiry} onChange={(e) => setExpiry(e.target.value)}/>
                 </Form.Field>
-                <Button onClick={testSubmit} type='submit'>Submit</Button>
+                <Button onClick={postData} type='submit'>Submit</Button>
             </Form>
         </div>
     )

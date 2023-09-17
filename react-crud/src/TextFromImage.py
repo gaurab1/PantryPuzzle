@@ -134,10 +134,9 @@ def detectText(img):
 #iterate through image path in the folder images
 for filename in os.listdir('../../images'):
     if filename.endswith(".jpg") or filename.endswith(".png"):
-        print(filename)
         print(detectText("../../images/" + filename))
         
-        IMAGE_URL = "../../images/" + filename
+        IMAGE_URL = 'https://www.reddit.com/media?url=https%3A%2F%2Fi.redd.it%2F7yb7oifld2651.jpg'
         post_model_outputs_response = stub.PostModelOutputs(
             service_pb2.PostModelOutputsRequest(
                 user_app_id=userDataObject,  # The userDataObject is created in the overview and is required when using a PAT
