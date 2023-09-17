@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Table, Button } from 'semantic-ui-react'
 import Geocode from "react-geocode";
+import { Table, Button, TextArea } from 'semantic-ui-react'
 
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore"; 
 import { firestore } from '../firebase';
@@ -8,19 +9,57 @@ import donateSubmit from '../handles/donatesubmit'
 import trash from '../trash-can-icon.svg'
 import '../App.css';
 
+import axios from 'axios';
+
 const querySnapshot = await getDocs(collection(firestore, "test_data"));
+
+
+
+//local host 3001
+const backendURL = 'http://localhost:3001/recipe'
 
 const onDelete = async (id) => {
     await deleteDoc(doc(firestore, "test_data", id));
     window.location.reload();
 }
 
+function handleDate(difference) {
+  if(difference < 0) {
+    return Math.abs(difference) + " days expired";
+  }
+  return difference + " days until expiration";
+
+  
+}
+
+
+
 const Read = (onClose) => {
+  const [text, setText] = useState('');
+  
     const [DecisionModalOpen, setDecisionModalOpen] = useState(false); //for submitting feedback
     const [selectedFood, setselectedFood] = useState([]);
     const [daysTilExpire, setDaysTilExpire] = useState([]);
     const [theID, settheID] = useState([]);
 
+    const generateRecipe = async (foodItem) => {
+      console.log(foodItem);
+    
+      //post request to backend with foodItem as body
+    
+      try {
+        const requestData = {foodItem: foodItem};
+        const response = await axios.post(backendURL, requestData);
+        //from response body, get data field
+        const recipeData = response.data;
+        console.log(recipeData);
+        setText(recipeData);
+      } catch (error) {
+        console.log(error);
+      }
+    
+    
+    }
 
     const DecisionModal = ({ onClose, foodItem, daysTilExpire, id }) => {
         console.log("heree");
@@ -151,6 +190,24 @@ const Read = (onClose) => {
                                 <Table.Cell><Button onClick={() => handleDecisionClick(doc.data().food, days, doc.id)}>Action</Button></Table.Cell>
                                 <Table.Cell><img src={trash} className="trash-icon" onClick={() => onDelete(doc.id)}/></Table.Cell>
                              </Table.Row>
+                    if (days > 2) {
+                    return (
+                        <Table.Row>
+                           <Table.Cell>{doc.data().food}</Table.Cell>
+                            <Table.Cell>{doc.data().expirationDate}</Table.Cell>
+                            <Table.Cell>{ handleDate(days) }</Table.Cell>
+                            <Table.Cell><Button onClick={() => onDelete(doc.id)}>Delete</Button></Table.Cell>
+
+                         </Table.Row>
+                    )} else {
+                        return (
+                            <Table.Row active>
+                            <Table.Cell>{doc.data().food}</Table.Cell>
+                             <Table.Cell>{doc.data().expirationDate}</Table.Cell>
+                             <Table.Cell>{handleDate(days)}</Table.Cell>
+                             <Table.Cell><Button onClick={() => handleDecisionClick(doc.data().food, days)}>Action!</Button></Table.Cell>
+ 
+                          </Table.Row>
                         )
                     }
                 })}
