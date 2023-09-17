@@ -31,8 +31,6 @@ function submitformtemp() {
 }
 export default submitformtemp;
 
-/////////
-
 // function App() {
 //   const dataRef = useRef()
 

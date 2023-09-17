@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, Form } from 'semantic-ui-react'
 
 import foodSubmit from '../handles/foodsubmit';
 import { useRef } from 'react';
+import axios from 'axios';
 //IMPORT FOODSUBMIT
 
 //IMPORT 
@@ -10,6 +11,8 @@ import { useRef } from 'react';
 
 import '../App.css';
 
+const backendUrl = 'http://127.0.0.1:3001/create';
+const backendUrl2 = 'http://127.0.0.1:3001/images';
 
 export default function Create() {
 
@@ -20,8 +23,27 @@ export default function Create() {
         setFood('')
         setExpiry('')
     }
+
+    // const [imageURLs, setImageURLs] = useState([]);
+
+    // const onImageUpload = async (e) => {
+    //     const files = e.target.files;
+    // }
+
     return (
         <div>
+            {/* Upload Food Images
+            <br/>
+            <br/>
+            <input type="file" multiple accept="image/*" onChange={onImageUpload} />
+            {imageURLs.map(imageSrc => <img src={imageSrc}  width="10%"/>)}
+            <br/>
+            <br/>
+
+            OR
+
+            <br/>
+            <br/> */}
             <Form className="create-form">
                 <Form.Field>
                     <label>Food Item</label>

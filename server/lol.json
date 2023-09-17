@@ -1,0 +1,13 @@
+{
+    "type": "service_account",
+    "project_id": "pantrypuzzle",
+    "private_key_id": "ecaaf210dea6aa4701269c6bbfc9cab661ac0d00",
+    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC89mYXgAigBJMF\nNoeK3K+mZ8+9d6dus+VczEmwojZ4KL8rDDu4JrYNut9MVKvLy/BzdmSFj2mJytAV\nL88ZEQInmhvn+Ezr6P3bmA9PU+kCjabxzJooY8KuIZx1EiUrcaTD4RCktibDVFkT\nArgVWJgdM59cocuLqxyk8hyJm4VDFsFPW5t7o/eu7+GTSVBnTytQUDgz2rqwAiFb\naUlZQvmF2g6zN4sWNDeVQ7AFmZA6k/zFEA0ix4FG/jv+ytQtMV5ykEHved0Bf/HM\nojbysQc+GVbKRislKphQ0stK6RFVBAOlEYNcD95cky+tPc8+MRrOx8b8lu+ZQpr6\nYduTSDU7AgMBAAECggEAESAVnZCdd38ioejQvO2GP8MNyUKUWoyUP2ZGUWtKG3a5\n6JlZujVL74+dmCneTgCEILq8nnwiWPoYBKuKDeAEPXmSiOHwerrpcuLjlFFq/y++\nTxC3ceykoqpqJxQHaVoJ0DTQENVvSumUjwwCifC3DIJ2sWr6awSNeod0vaXqHGvF\n8PgBsXvrBSJJ3/mUzL477wHZr0peDfgY77OKxp0CksulzY0I49hmX5BUqV7+tKhO\ng5L4xSrz9Smpd9aAJ7omkdWBGnDe+eP38986b6R/h64avti8DQSRGz8UJuRGljeM\n9VY38BQJofqXUA8juctAjEgg8gACxL9RpleN7XO30QKBgQD0GPmniQmKnwLkAWQ9\naEmZBwIdn5xlNvJWwyZnZw3IOmrAHnpF/NIELCGBrPHdaabDdIXhQCY6xPTjbUY2\n8qwscWismargILeGnU3+mAKno4IU/dmCWcvW9SWgvzg9lnDBAj5W4UNp9c55gp/7\ndG2HIzcqgSmw6SIZ/HOsN5vC8QKBgQDGLS7I49CPoI9wVlSsUKHvavR3acPTP9wY\nccBO68X7tOTiCx+8wOJaYDPoUdEYDe+bzl/fzjY/4w1kUEOYoOTpE+wKqMIPnaew\npkJXZIhZxwtEbgiVJqHLQgXwCXaeqmBZoqqahqcOJJkqry0w/1yByByjM0x0bJVg\nna0tOWxi6wKBgQDl+kntMM2OjzY3/5+jw4fj55h0tJazPcuhNwgN0ChKB8/f5lcp\nbYOpbrK67GiMRShbaoNgsAHUyRA43hGTX5wb21XVmIpH1EtVRwve3PVTYFgE0w6F\nI3lLs3iaNM8WJ5FgJ274iA/t2yuHjCySyyUOd31YTI0tItmARjvtfA8C4QKBgHXO\nwEQd4YqwKPTf7T/uQwWfcCpYjlfTW5SQcoC3+h7Sf0m80SYVB7ov/Et776+8ARd/\nDFFwNaGu6PQcHsLpyoqgFC6V+Z7s2pXRkBiBo+iywYjxXFrF92JsIjl6drCFmfdP\nEtn/d+mZahAMyPGarDRecF+4DBgdwIMJ2LvMqhj3AoGBAKlPa2axic5hPaYnwgKa\nJyWgVeRSnScWa77549txz8yZA4NXC4Hh+PpDw360spHnlQED3Y7LkWZOMJo4gf9P\nmUvSb0VktofSURn/8HEt64T0NeJ0MiLWy1TJFZbD9dpF0WetiPTLbSiYUU/td96C\n4mAISwLGFK5byaG/DAzxeDuW\n-----END PRIVATE KEY-----\n",
+    "client_email": "firebase-adminsdk-zendl@pantrypuzzle.iam.gserviceaccount.com",
+    "client_id": "111274491639987122385",
+    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+    "token_uri": "https://oauth2.googleapis.com/token",
+    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-zendl%40pantrypuzzle.iam.gserviceaccount.com",
+    "universe_domain": "googleapis.com"
+  }
