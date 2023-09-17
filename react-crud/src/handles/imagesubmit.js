@@ -1,14 +1,17 @@
+//Interacting w/ the images.
+
 import { addDoc, collection } from "@firebase/firestore"
 import firebase from "firebase/compat/app";
 // Required for side-effects
 import { firestore} from '../firebase';
  
-const foodSubmit = (foodItem, daysToExp) => {
-    const ref = collection(firestore, "donations") // Firebase creates this automatically
+const imageSubmit = (foodItem, expDate) => {
+    console.log("submitted");
+    const ref = collection(firestore, "imageData") // Firebase creates this automatically
  
     let data = {
         food: foodItem,
-        daysTilExpire: daysToExp,
+        expirationDate: expDate,
         //maybe add location here? Depends on how we choose to incorporate location
     }
     
@@ -19,4 +22,4 @@ const foodSubmit = (foodItem, daysToExp) => {
     }
 }
  
-export default foodSubmit
+export default imageSubmit
