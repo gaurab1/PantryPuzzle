@@ -8,8 +8,8 @@ function App() {
     <Router>
     <div className="main">
       <h1 className="main-header">PantryPuzzle</h1>
+      
       <div>
-        
         <Routes>
         <Route path='/create' element={<Create />} />
         <Route path='/read' element={<Read />} />
