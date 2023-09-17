@@ -136,7 +136,7 @@ const Read = (onClose) => {
         }
       
         // DELETE FROM "test_data"
-        onDelete(id);
+        // onDelete(id);
         onClose = setDecisionModalOpen(false);
       };
       
