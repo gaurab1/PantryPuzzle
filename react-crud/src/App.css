@@ -28,7 +28,28 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.close-btn {
+  position: relative;
+  top: -10px;
+  right: 0;
+  margin-left: 97%;
+  padding: 8px; /* Add some padding around the "x" mark for better clickability */
+  cursor: pointer;
+  font-size: 1.5rem; /* Set the font size for the "x" mark */
+  color: #888; /* Set the color of the "x" mark */
+}
 
+
+
+
+.btns {
+  margin-top: 10px;
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+
+}
 
 .App {
   text-align: center;

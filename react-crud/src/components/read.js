@@ -3,6 +3,7 @@ import { Table, Button } from 'semantic-ui-react'
 
 import { collection, getDocs, doc, deleteDoc } from "firebase/firestore"; 
 import { firestore } from '../firebase';
+import donateSubmit from '../handles/donatesubmit'
 import '../App.css';
 
 const querySnapshot = await getDocs(collection(firestore, "test_data"));
@@ -15,21 +16,26 @@ const onDelete = async (id) => {
 const Read = (onClose) => {
     const [DecisionModalOpen, setDecisionModalOpen] = useState(false); //for submitting feedback
     const [selectedFood, setselectedFood] = useState([]);
+    const [daysTilExpire, setDaysTilExpire] = useState([]);
 
 
 
 
-    const DecisionModal = ({ onClose, foodItem }) => {
+    const DecisionModal = ({ onClose, foodItem, daysTilExpire }) => {
+        console.log("heree");
+        // e.preventDefault();
         return (
           <div className="modal-backdrop">
             <div className="modal-content">
               <span className="close-btn" onClick={onClose}>&times;</span>
     
               <div className="choices-container">
-                <h1>What do you want to do with {foodItem}?</h1>
+                <h1>What do you want to do with your {foodItem}?</h1>
+                {/* <h2>{daysTilExpire}</h2> */}
 
-                <button>Give me recipe ideas</button>
-                <button>Donate my food</button>
+                <Button>Give me recipe ideas</Button>
+                <Button onClick={function(){ donateSubmit(foodItem, daysTilExpire) }}>Donate my food</Button>
+                    {/* REROUTE TO DONATE.JS PAGE!!!! */}
               </div>
       
             </div>
@@ -37,9 +43,18 @@ const Read = (onClose) => {
         );
       };
 
+      const  Donate = async ( food, expiry ) => {
+            donateSubmit(food, expiry);
+      };
 
-      const handleDecisionClick = (foodItem) => {
+      const  CONSOLE = async ( food, expiry ) => {
+        donateSubmit(food, expiry);
+  };
+
+
+      const handleDecisionClick = (foodItem, daysTilExpire) => {
         setselectedFood(foodItem); // Merge the profilePictureUrl into the selectedApplicant
+        setDaysTilExpire(daysTilExpire); // Merge the profilePictureUrl into the selectedApplicant
         console.log(foodItem);
         setDecisionModalOpen(true);
       };
@@ -82,7 +97,7 @@ const Read = (onClose) => {
                             <Table.Cell>{doc.data().food}</Table.Cell>
                              <Table.Cell>{doc.data().expirationDate}</Table.Cell>
                              <Table.Cell>{Math.ceil(-(date - new Date(doc.data().expirationDate)) / (1000 * 60 * 60 * 24))}</Table.Cell>
-                             <Table.Cell><Button onClick={() => handleDecisionClick(doc.data().food)}>Action!</Button></Table.Cell>
+                             <Table.Cell><Button onClick={() => handleDecisionClick(doc.data().food, days)}>Action!</Button></Table.Cell>
  
                           </Table.Row>
                         )
@@ -95,6 +110,7 @@ const Read = (onClose) => {
 
             {DecisionModalOpen && (<DecisionModal 
                 foodItem={selectedFood}
+                daysTilExpire={daysTilExpire}
                 onClose={() => setDecisionModalOpen(false)}/>
             )}
         </div>
