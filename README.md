@@ -1,5 +1,6 @@
 # PantryPuzzle
 35% of commercial food products get expired before they can be consumed. In lines of sustainability, we propose a solution that allows users to automatically keep track of their food products in the fridge, and suggest recipes to utilize them or to donate them to people in need.
+Check out our [YouTube demo video](https://www.youtube.com/watch?v=L6nTEobtefs&ab_channel=gaurabdas) and our [Devpost submission](https://devpost.com/software/pantrypuzzle)! 
 
 # How to run
 
